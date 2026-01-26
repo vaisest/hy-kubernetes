@@ -14,7 +14,18 @@ spec:
       labels:
         app: log-output
     spec:
+      volumes:
+        - name: shared-image
+          emptyDir: {}
       containers:
         - name: log-output
-          image: turtvaiz/log-output:1.7-1
+          image: turtvaiz/log-output:1.10
+          volumeMounts:
+            - name: shared-image
+              mountPath: /app/files
+        - name: log-output-timer
+          image: turtvaiz/log-output-timer:1.10
+          volumeMounts:
+            - name: shared-image
+              mountPath: /app/files
    

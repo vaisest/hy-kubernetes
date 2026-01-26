@@ -1,12 +1,11 @@
 import uuid
 from datetime import datetime
-import fastapi
 import pathlib
+import time
 
 unique = str(uuid.uuid1())
-app = fastapi.FastAPI()
 dest_file = pathlib.Path("./files/data.txt")
 
-@app.get("/")
-def get_ts():
-    return {"data": dest_file.read_text()}
+while True:
+    dest_file.write_text(f"{datetime.now().isoformat()}: {unique}")
+    time.sleep(5)
