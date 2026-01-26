@@ -9,4 +9,4 @@ COPY uv.lock .
 RUN uv sync
 
 COPY main.py .
-CMD ["uv", "run", "fastapi", "dev"]
+CMD ["uv", "run", "fastapi", "run"]
