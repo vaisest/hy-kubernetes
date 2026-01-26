@@ -1,6 +1,12 @@
-FROM python:3.14-alpine
+FROM ghcr.io/astral-sh/uv:alpine
+
+ENV PORT=8080
 
 WORKDIR /app
-COPY ./stamp.py .
+COPY pyproject.toml .
+COPY uv.lock .
 
-CMD ["python", "-u", "stamp.py"] 
+RUN uv sync
+
+COPY main.py .
+CMD ["uv", "run", "fastapi", "run"]
