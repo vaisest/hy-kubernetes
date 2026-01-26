@@ -16,5 +16,5 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: turtvaiz/todo-app
+          image: turtvaiz/todo-app:1.5
    
