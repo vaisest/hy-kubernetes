@@ -16,4 +16,10 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: turtvaiz/todo-app:1.6.1
+          image: turtvaiz/todo-app:1.12-2
+          volumeMounts:
+            - mountPath: /app/cache
+              name: img-vol
+      volumes:
+       - name: img-vol
+         emptyDir: {}

@@ -9,4 +9,5 @@ COPY uv.lock .
 RUN uv sync
 
 COPY main.py .
+COPY templates ./templates
 CMD ["uv", "run", "fastapi", "run"]
