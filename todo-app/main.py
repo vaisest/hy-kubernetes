@@ -45,3 +45,7 @@ async def do_something(request: Request):
     )
     check_img()
     return res
+
+
+# nonfunctional, not required yet
+# @app.post("/todo")
