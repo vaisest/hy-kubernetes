@@ -15,17 +15,18 @@ spec:
         app: log-output
     spec:
       volumes:
-        - name: shared-image
-          emptyDir: {}
+        - name: shared-data
+          persistentVolumeClaim:
+            claimName: data-claim
       containers:
         - name: log-output
-          image: turtvaiz/log-output:1.10
+          image: turtvaiz/log-output:1.11
           volumeMounts:
-            - name: shared-image
+            - name: shared-data
               mountPath: /app/files
         - name: log-output-timer
           image: turtvaiz/log-output-timer:1.10
           volumeMounts:
-            - name: shared-image
+            - name: shared-data
               mountPath: /app/files
    
