@@ -14,13 +14,42 @@ spec:
       labels:
         app: ping-pong
     spec:
-      # volumes:
-      #   - name: shared-data
-      #     persistentVolumeClaim:
-      #       claimName: data-claim
       containers:
         - name: ping-pong
           image: turtvaiz/ping-pong:2.1
-          # volumeMounts:
-          #   - name: shared-data
-          #     mountPath: /app/files
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pg-stset
+spec:
+  serviceName: pg-svc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pg-app
+  template:
+    metadata:
+      labels:
+        app: pg-app
+    spec:
+      containers:
+        - name: pg
+          image: postgres:alpine
+          ports:
+            - name: db
+              containerPort: 5432
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          env:
+            - name: POSTGRES_PASSWORD
+              value: pass
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 100Mi
