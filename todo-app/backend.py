@@ -1,9 +1,15 @@
-from fastapi import Depends, FastAPI, Form, Request
-from typing import Annotated, Sequence
-from fastapi.responses import RedirectResponse, JSONResponse
+import logging
 import os
+from typing import Annotated, Sequence
 
+from fastapi import Depends, FastAPI, Form, HTTPException
+from fastapi.logger import logger
+from fastapi.responses import RedirectResponse
 from sqlmodel import Field, Session, SQLModel, create_engine, select
+from pydantic import ValidationError
+
+logger = logging.getLogger("uvicorn.error")
+
 
 app = FastAPI()
 
@@ -16,7 +22,7 @@ engine = create_engine(psql_url)
 
 class Todo(SQLModel, table=True):
     id: int | None = Field(primary_key=True, default=None)
-    content: str = Field(nullable=False)
+    content: str = Field(nullable=False, max_length=140)
 
 
 def create_db_and_tables():
@@ -37,7 +43,7 @@ def on_startup():
 
 
 @app.get("/todos")
-async def do_something(session: SessionDep) -> Sequence[Todo]:
+async def return_something(session: SessionDep) -> Sequence[Todo]:
     return session.exec(select(Todo)).all()
 
 
@@ -45,6 +51,11 @@ async def do_something(session: SessionDep) -> Sequence[Todo]:
 async def add_something(
     content: Annotated[str, Form()], session: SessionDep
 ) -> RedirectResponse:
-    session.add(Todo(content=content))
+    try:
+        todo = Todo.model_validate(Todo(content=content))
+    except ValidationError:
+        raise HTTPException(status_code=400, detail="Validation of the Todo failed.")
+    session.add(todo)
     session.commit()
+    logger.info(f"Adding todo with content: '{content}'")
     return RedirectResponse(url="/", status_code=303)
