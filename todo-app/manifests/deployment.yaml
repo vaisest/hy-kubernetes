@@ -16,13 +16,25 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: turtvaiz/todo-app:2.2-9
+          image: turtvaiz/todo-app:2.6
           volumeMounts:
             - mountPath: /app/cache
               name: img-vol
+          env:
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: BACKEND_URL
+            - name: PICSUM_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: PICSUM_URL
       volumes:
-       - name: img-vol
-         emptyDir: {}
+        - name: img-vol
+          emptyDir: {}
+      
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -42,4 +54,4 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: turtvaiz/todo-app:be-2.2-9
+          image: turtvaiz/todo-app:be-2.6

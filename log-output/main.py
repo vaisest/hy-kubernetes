@@ -11,11 +11,11 @@ conf_file = pathlib.Path("./config/information.txt")
 
 
 def get_ping_count():
-    req = requests.get("http://ping-pong-svc:1234/pings")
+    req = requests.get("http://ping-pong-svc:1234/exercises/pings")
     return req.json()["pings"]
 
 
-@app.get("/")
+@app.get("/exercises/")
 def get_ts():
     pings = get_ping_count()
     return {

@@ -1,4 +1,4 @@
-$ver = "2.2-9"
+$ver = "2.6"
 
 docker build . -t turtvaiz/todo-app:$ver -f front.Dockerfile
 docker build . -t turtvaiz/todo-app:be-$ver -f back.Dockerfile
