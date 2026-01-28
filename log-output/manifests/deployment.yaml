@@ -18,14 +18,29 @@ spec:
         - name: shared-data
           persistentVolumeClaim:
             claimName: data-claim
+        - name: config
+          configMap:
+            name: log-output-configmap
+            items:
+              - key: "information.txt"
+                path: "information.txt"
       containers:
         - name: log-output
-          image: turtvaiz/log-output:2.1
+          image: turtvaiz/log-output:2.5
           volumeMounts:
             - name: shared-data
               mountPath: /app/files
+            - name: config
+              mountPath: "/app/config"
+              readOnly: true
+          env:
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: MESSAGE
         - name: log-output-timer
-          image: turtvaiz/log-output-timer:1.10
+          image: turtvaiz/log-output-timer:2.5
           volumeMounts:
             - name: shared-data
               mountPath: /app/files
