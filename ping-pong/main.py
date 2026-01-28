@@ -1,13 +1,20 @@
 from fastapi import FastAPI
-from pathlib import Path
+# from pathlib import Path
 
 app = FastAPI()
-state_file = Path("./files/pings.txt")
-if not state_file.exists() or not state_file.read_text():
-    state_file.write_text("0")
+# state_file = Path("./pings.txt")
+# if not state_file.exists() or not state_file.read_text():
+#     state_file.write_text("0")
+app.state.pings = 0
+
 
 @app.get("/pingpong")
 async def do_something():
-    pings = int(state_file.read_text())
-    state_file.write_text(str(pings + 1))
-    return {"pings": pings }
+    res = {"pings": app.state.pings}
+    app.state.pings += 1
+    return res
+
+
+@app.get("/pings")
+async def get_pings():
+    return {"pings": app.state.pings}

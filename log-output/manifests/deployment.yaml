@@ -20,7 +20,7 @@ spec:
             claimName: data-claim
       containers:
         - name: log-output
-          image: turtvaiz/log-output:1.11
+          image: turtvaiz/log-output:2.1
           volumeMounts:
             - name: shared-data
               mountPath: /app/files
