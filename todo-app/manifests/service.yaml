@@ -23,3 +23,16 @@ spec:
     - protocol: TCP
       port: 1234 # This is a port that is available to the cluster, in this case it can be ~ anything
       targetPort: 8080 # This is the target port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pg-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: pg-app # This is the app as declared in the deployment.
+  ports: 
+    - protocol: TCP
+      port: 5432 # This is a port that is available to the cluster, in this case it can be ~ anything
+      targetPort: 5432 # This is the target port

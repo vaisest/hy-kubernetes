@@ -6,7 +6,11 @@ WORKDIR /app
 COPY pyproject.toml .
 COPY uv.lock .
 
-RUN uv sync
+RUN \
+    apk add --no-cache postgresql-libs && \
+    apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
+    uv sync && \
+    apk --purge del .build-deps
 
 COPY main.py .
 COPY templates ./templates

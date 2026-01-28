@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: turtvaiz/todo-app:2.6
+          image: turtvaiz/todo-app:2.8-9
           volumeMounts:
             - mountPath: /app/cache
               name: img-vol
@@ -24,12 +24,12 @@ spec:
             - name: BACKEND_URL
               valueFrom:
                 configMapKeyRef:
-                  name: log-output-configmap
+                  name: todo-configmap
                   key: BACKEND_URL
             - name: PICSUM_URL
               valueFrom:
                 configMapKeyRef:
-                  name: log-output-configmap
+                  name: todo-configmap
                   key: PICSUM_URL
       volumes:
         - name: img-vol
@@ -54,4 +54,43 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: turtvaiz/todo-app:be-2.6
+          image: turtvaiz/todo-app:be-2.8-9
+          envFrom:
+            - secretRef:
+                name: psql-auth
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pg-stset
+spec:
+  serviceName: pg-svc
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pg-app
+  template:
+    metadata:
+      labels:
+        app: pg-app
+    spec:
+      containers:
+        - name: pg
+          image: postgres:alpine
+          ports:
+            - name: db
+              containerPort: 5432
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          envFrom:
+            - secretRef:
+                name: psql-auth
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 100Mi
