@@ -32,20 +32,24 @@ def check_img():
 check_img()
 
 
+def get_todos():
+    req = requests.get("http://todo-backend-svc:1234/todos")
+    return req.json()
+
+
 @app.get("/", response_class=HTMLResponse)
 async def do_something(request: Request):
-    res = templates.TemplateResponse(
+    todos = get_todos()
+
+    page = templates.TemplateResponse(
         request=request,
         name="main.j2",
         context={
             "image_data": base64.b64encode(
                 app.state.placeholder_img.read_bytes()
-            ).decode("utf-8")
+            ).decode("utf-8"),
+            "todos": [todo["content"] for todo in todos],
         },
     )
     check_img()
-    return res
-
-
-# nonfunctional, not required yet
-# @app.post("/todo")
+    return page

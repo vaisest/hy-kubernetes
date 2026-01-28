@@ -16,10 +16,30 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: turtvaiz/todo-app:1.12-2
+          image: turtvaiz/todo-app:2.2-9
           volumeMounts:
             - mountPath: /app/cache
               name: img-vol
       volumes:
        - name: img-vol
          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-backend-dep
+  labels:
+    app: todo-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-backend
+  template:
+    metadata:
+      labels:
+        app: todo-backend
+    spec:
+      containers:
+        - name: todo-backend
+          image: turtvaiz/todo-app:be-2.2-9
