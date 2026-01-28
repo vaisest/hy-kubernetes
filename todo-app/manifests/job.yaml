@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: add-wikipedia-todo
+spec:
+  schedule: "@hourly"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: add-todo
+            image: alpine/curl
+            command: 
+              - /bin/sh
+              - -c
+              - 'PAGE=$(curl -Ls -w %{url_effective} -o /dev/null "https://en.wikipedia.org/wiki/Special:Random"); curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "content=$PAGE" "$BACKEND_URL/todos"'
+            envFrom:
+              - configMapRef:
+                  name: todo-configmap
+          restartPolicy: OnFailure # This time we'll run it only once
