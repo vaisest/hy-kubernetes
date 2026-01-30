@@ -64,8 +64,8 @@ jobs:
       - name: Deploy
         working-directory: "todo-app"
         run: |-
-          kustomize edit set image PROJECT/IMAGE=$IMAGE_TAG_BE
-          kustomize edit set image BE_PROJECT/IMAGE=$IMAGE_TAG_FE
+          kustomize edit set image PROJECT/IMAGE=$IMAGE_TAG_FE
+          kustomize edit set image BE_PROJECT/IMAGE=$IMAGE_TAG_BE
           kustomize build . | kubectl apply -f -
           kubectl rollout status deployment $SERVICE
           kubectl get services -o wide
