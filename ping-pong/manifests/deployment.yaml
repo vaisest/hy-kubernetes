@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ping-pong
-          image: turtvaiz/ping-pong:2.1
+          image: turtvaiz/ping-pong:3.2
 ---
 apiVersion: apps/v1
 kind: StatefulSet
