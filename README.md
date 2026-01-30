@@ -38,3 +38,4 @@
 - [3.3.](https://github.com/vaisest/hy-kubernetes/tree/3.3/ping-pong)
 - [3.4.](https://github.com/vaisest/hy-kubernetes/tree/3.4/ping-pong)
 - [3.5.](https://github.com/vaisest/hy-kubernetes/tree/3.5/ping-pong)
+- [3.6.](https://github.com/vaisest/hy-kubernetes/tree/3.6/)
