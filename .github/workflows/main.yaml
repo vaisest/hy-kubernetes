@@ -11,7 +11,7 @@ env:
   REPOSITORY: hy-kubernetes
   IMAGE_BE: todo-app-be
   IMAGE_FE: todo-app-fe
-  SERVICE: todo-svc
+  SERVICE: todo-app
   BRANCH: ${{ github.ref_name }}
 
 jobs:
