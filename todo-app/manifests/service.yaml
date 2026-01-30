@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: todo-svc
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: todo-app # This is the app as declared in the deployment.
   ports: 
@@ -16,7 +16,7 @@ kind: Service
 metadata:
   name: todo-backend-svc
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: todo-backend # This is the app as declared in the deployment.
   ports: 
@@ -29,7 +29,7 @@ kind: Service
 metadata:
   name: pg-svc
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: pg-app # This is the app as declared in the deployment.
   ports: 
