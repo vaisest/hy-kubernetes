@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: ping-pong-svc
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: ping-pong # This is the app as declared in the deployment.
   ports: 
@@ -16,7 +16,7 @@ kind: Service
 metadata:
   name: pg-svc
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: pg-app # This is the app as declared in the deployment.
   ports: 
