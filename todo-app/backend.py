@@ -37,6 +37,11 @@ def get_session():
 SessionDep = Annotated[Session, Depends(get_session)]
 
 
+@app.get("/")
+async def health():
+    return "ok"
+
+
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()

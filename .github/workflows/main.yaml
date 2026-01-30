@@ -9,7 +9,8 @@ env:
   GKE_ZONE: europe-north1-b
   REGISTRY: europe-north1-docker.pkg.dev
   REPOSITORY: hy-kubernetes
-  IMAGE: todo-app
+  IMAGE-BE: todo-app-be
+  IMAGE-FE: todo-app-fe
   SERVICE: todo-svc
   BRANCH: ${{ github.ref_name }}
 
@@ -43,13 +44,21 @@ jobs:
           location: '${{ env.GKE_ZONE }}'
 
       - name : 'Form the image name'
-        run: echo "IMAGE_TAG=$REGISTRY/$PROJECT_ID/$REPOSITORY/$IMAGE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+        run: echo "IMAGE_TAG-BE=$REGISTRY/$PROJECT_ID/$REPOSITORY/$IMAGE-BE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
+
+      - name : 'Form the image name'
+        run: echo "IMAGE_TAG-FE=$REGISTRY/$PROJECT_ID/$REPOSITORY/$IMAGE-FE:$BRANCH-$GITHUB_SHA" >> $GITHUB_ENV
 
       - name: Build
-        run: docker build --tag $IMAGE_TAG todo-app
+        run: docker build --tag $IMAGE_TAG-BE todo-app -f todo-app/back.Dockerfile
+
+      - name: Build front
+        run: docker build --tag $IMAGE_TAG-FE todo-app -f todo-app/front.Dockerfile
 
       - name: Publish
-        run: docker push $IMAGE_TAG
+        run: docker push $IMAGE_TAG-BE
+      - name: Publish
+        run: docker push $IMAGE_TAG-FE
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v2.1.0
       - name: Deploy
