@@ -7,4 +7,4 @@ resources:
   - manifests/route.yaml
 images:
   - name: PROJECT/IMAGE
-    newName: turtvaiz/ping-pong:3.5
+    newName: turtvaiz/todo-app:2.10-5
